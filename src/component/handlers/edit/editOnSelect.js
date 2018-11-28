@@ -20,6 +20,7 @@ var ReactDOM = require('ReactDOM');
 
 var getDraftEditorSelection = require('getDraftEditorSelection');
 const invariant = require('invariant');
+const isHTMLElement = require('isHTMLElement');
 
 function editOnSelect(editor: DraftEditor): void {
   if (
@@ -33,7 +34,7 @@ function editOnSelect(editor: DraftEditor): void {
   const editorNode = ReactDOM.findDOMNode(editor.editorContainer);
   invariant(editorNode, 'Missing editorNode');
   invariant(
-    editorNode.firstChild instanceof HTMLElement,
+    isHTMLElement(editorNode.firstChild),
     'editorNode.firstChild is not an HTMLElement',
   );
   var documentSelection = getDraftEditorSelection(

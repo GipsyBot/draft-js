@@ -20,6 +20,8 @@ const DraftJsDebugLogging = require('DraftJsDebugLogging');
 const containsNode = require('containsNode');
 const getActiveElement = require('getActiveElement');
 const invariant = require('invariant');
+const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
+const isElement = require('isElement');
 
 function getAnonymizedDOM(
   node: Node,
@@ -35,10 +37,11 @@ function getAnonymizedDOM(
   }
 
   invariant(
-    anonymized instanceof Element,
+    isElement(anonymized),
     'Node must be an Element if it is not a text node.',
   );
-  return anonymized.outerHTML;
+  const castedElement: Element = (anonymized: any);
+  return castedElement.outerHTML;
 }
 
 function anonymizeTextWithin(
@@ -49,7 +52,7 @@ function anonymizeTextWithin(
 
   if (node.nodeType === Node.TEXT_NODE) {
     var length = node.textContent.length;
-    return document.createTextNode(
+    return getCorrectDocumentFromNode(node).createTextNode(
       '[text ' +
         length +
         (labels.length ? ' | ' + labels.join(', ') : '') +
@@ -75,15 +78,14 @@ function getAnonymizedEditorDOM(
 ): string {
   // grabbing the DOM content of the Draft editor
   let currentNode = node;
+  let castedNode: Element = (currentNode: any);
   while (currentNode) {
-    if (
-      currentNode instanceof Element &&
-      currentNode.hasAttribute('contenteditable')
-    ) {
+    if (isElement(currentNode) && castedNode.hasAttribute('contenteditable')) {
       // found the Draft editor container
       return getAnonymizedDOM(currentNode, getNodeLabels);
     } else {
       currentNode = currentNode.parentNode;
+      castedNode = (currentNode: any);
     }
   }
   return 'Could not find contentEditable parent of node';
@@ -114,11 +116,12 @@ function setDraftEditorSelection(
   // It's possible that the editor has been removed from the DOM but
   // our selection code doesn't know it yet. Forcing selection in
   // this case may lead to errors, so just bail now.
-  if (!containsNode(document.documentElement, node)) {
+  const documentObject = getCorrectDocumentFromNode(node);
+  if (!containsNode(documentObject.documentElement, node)) {
     return;
   }
 
-  var selection = global.getSelection();
+  const selection = documentObject.defaultView.getSelection();
   var anchorKey = selectionState.getAnchorKey();
   var anchorOffset = selectionState.getAnchorOffset();
   var focusKey = selectionState.getFocusKey();
@@ -315,7 +318,7 @@ function addPointToSelection(
   offset: number,
   selectionState: SelectionState,
 ): void {
-  var range = document.createRange();
+  const range = getCorrectDocumentFromNode(node).createRange();
   // logging to catch bug that is being reported in t16250795
   if (offset > getNodeLength(node)) {
     // in this case we know that the call to 'range.setStart' is about to throw

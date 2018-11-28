@@ -22,6 +22,7 @@ var removeTextWithStrategy = require('removeTextWithStrategy');
 
 function keyCommandBackspaceToStartOfLine(
   editorState: EditorState,
+  e: SyntheticKeyboardEvent<HTMLElement>,
 ): EditorState {
   var afterRemoval = removeTextWithStrategy(
     editorState,
@@ -31,7 +32,8 @@ function keyCommandBackspaceToStartOfLine(
         return moveSelectionBackward(strategyState, 1);
       }
 
-      var domSelection = global.getSelection();
+      const {ownerDocument} = e.currentTarget;
+      const domSelection = ownerDocument.defaultView.getSelection();
       var range = domSelection.getRangeAt(0);
       range = expandRangeToStartOfLine(range);
 

@@ -16,6 +16,7 @@
 const React = require('React');
 const ReactDOM = require('ReactDOM');
 const UserAgent = require('UserAgent');
+const isElement = require('isElement');
 
 const invariant = require('invariant');
 
@@ -81,7 +82,7 @@ class DraftEditorTextNode extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const node = ReactDOM.findDOMNode(this);
     const shouldBeNewline = nextProps.children === '';
-    invariant(node instanceof Element, 'node is not an Element');
+    invariant(isElement(node), 'node is not an Element');
     if (shouldBeNewline) {
       return !isNewline(node);
     }

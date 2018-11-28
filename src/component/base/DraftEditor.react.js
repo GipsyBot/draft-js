@@ -40,7 +40,7 @@ const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const getScrollPosition = require('getScrollPosition');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
-
+const isHTMLElement = require('isHTMLElement');
 const isIE = UserAgent.isBrowser('IE');
 
 // IE does not support the `input` event on contentEditable, so we can't
@@ -327,7 +327,11 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
      * ie9-beta-minor-change-list.aspx
      */
     if (isIE) {
-      document.execCommand('AutoUrlDetect', false, false);
+      if (!this.editor) {
+        global.execCommand('AutoUrlDetect', false, false);
+      } else {
+        this.editor.ownerDocument.execCommand('AutoUrlDetect', false, false);
+      }
     }
   }
 
@@ -371,11 +375,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     const scrollParent = Style.getScrollParent(editorNode);
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
 
-    invariant(
-      editorNode instanceof HTMLElement,
-      'editorNode is not an HTMLElement',
-    );
-    editorNode.focus();
+    invariant(isHTMLElement(editorNode), 'editorNode is not an HTMLElement');
 
     // Restore scroll position
     if (scrollParent === window) {
@@ -397,10 +397,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
   blur = (): void => {
     const editorNode = ReactDOM.findDOMNode(this.editor);
-    invariant(
-      editorNode instanceof HTMLElement,
-      'editorNode is not an HTMLElement',
-    );
+    invariant(isHTMLElement(editorNode), 'editorNode is not an HTMLElement');
     editorNode.blur();
   };
 

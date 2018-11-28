@@ -21,6 +21,7 @@ var getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
 var getUpdatedSelectionState = require('getUpdatedSelectionState');
 var invariant = require('invariant');
 var nullthrows = require('nullthrows');
+const isElement = require('isElement');
 
 type SelectionPoint = {
   key: string,
@@ -125,8 +126,8 @@ function getFirstLeaf(node: any): Node {
   while (
     node.firstChild &&
     // data-blocks has no offset
-    ((node.firstChild instanceof Element &&
-      node.firstChild.getAttribute('data-blocks') === 'true') ||
+    ((isElement(node.firstChild) &&
+      (node.firstChild: Element).getAttribute('data-blocks') === 'true') ||
       getSelectionOffsetKeyForNode(node.firstChild))
   ) {
     node = node.firstChild;
@@ -141,7 +142,7 @@ function getLastLeaf(node: any): Node {
   while (
     node.lastChild &&
     // data-blocks has no offset
-    ((node.lastChild instanceof Element &&
+    ((isElement(node) &&
       node.lastChild.getAttribute('data-blocks') === 'true') ||
       getSelectionOffsetKeyForNode(node.lastChild))
   ) {
@@ -168,8 +169,13 @@ function getPointForNonTextNode(
   // wrapper.
   if (editorRoot === node) {
     node = node.firstChild;
+    invariant(isElement(node), 'Invalid DraftEditorContents node.');
+    const castedNode: Element = (node: any);
+    // assignment only added for flow :/
+    // otherwise it throws in line 200 saying that node can be null or undefined
+    node = castedNode;
     invariant(
-      node instanceof Element && node.getAttribute('data-contents') === 'true',
+      node.getAttribute('data-contents') === 'true',
       'Invalid DraftEditorContents structure.',
     );
     if (childOffset > 0) {

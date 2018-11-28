@@ -13,18 +13,23 @@
 
 'use strict';
 
+const isElement = require('isElement');
+
 /**
  * Get offset key from a node or it's child nodes. Return the first offset key
  * found on the DOM tree of given node.
  */
 function getSelectionOffsetKeyForNode(node: Node): ?string {
-  if (node instanceof Element) {
-    var offsetKey = node.getAttribute('data-offset-key');
+  if (isElement(node)) {
+    const castedNode: Element = (node: any);
+    const offsetKey = castedNode.getAttribute('data-offset-key');
     if (offsetKey) {
       return offsetKey;
     }
-    for (var ii = 0; ii < node.childNodes.length; ii++) {
-      var childOffsetKey = getSelectionOffsetKeyForNode(node.childNodes[ii]);
+    for (var ii = 0; ii < castedNode.childNodes.length; ii++) {
+      const childOffsetKey = getSelectionOffsetKeyForNode(
+        castedNode.childNodes[ii],
+      );
       if (childOffsetKey) {
         return childOffsetKey;
       }

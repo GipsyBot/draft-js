@@ -26,10 +26,12 @@ const ContentBlockNode = require('ContentBlockNode');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEntity = require('DraftEntity');
 const DraftFeatureFlags = require('DraftFeatureFlags');
-const Immutable = require('immutable');
-const {Set} = require('immutable');
 const URI = require('URI');
+const {List, OrderedSet, Set} = require('immutable');
 
+const isHTMLElement = require('isHTMLElement');
+const isHTMLAnchorElement = require('isHTMLAnchorElement');
+const isHTMLImageElement = require('isHTMLImageElement');
 const cx = require('cx');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
@@ -51,8 +53,6 @@ type Chunk = {
   entities: Array<string>,
   blocks: Array<Block>,
 };
-
-const {List, OrderedSet} = Immutable;
 
 const NBSP = '&nbsp;';
 const SPACE = ' ';
@@ -198,8 +198,8 @@ const processInlineTag = (
   const styleToCheck = inlineTags[tag];
   if (styleToCheck) {
     currentStyle = currentStyle.add(styleToCheck).toOrderedSet();
-  } else if (node instanceof HTMLElement) {
-    const htmlElement = node;
+  } else if (isHTMLElement(node)) {
+    const htmlElement: HTMLElement = (node: any);
     currentStyle = currentStyle
       .withMutations(style => {
         const fontWeight = htmlElement.style.fontWeight;
@@ -283,11 +283,9 @@ const containsSemanticBlockMarkup = (
 };
 
 const hasValidLinkText = (link: Node): boolean => {
-  invariant(
-    link instanceof HTMLAnchorElement,
-    'Link must be an HTMLAnchorElement.',
-  );
-  const protocol = link.protocol;
+  invariant(isHTMLAnchorElement(link), 'Link must be an HTMLAnchorElement.');
+  const castedMink: HTMLAnchorElement = (link: any);
+  const protocol = castedLink.protocol;
   return (
     protocol === 'http:' || protocol === 'https:' || protocol === 'mailto:'
   );
@@ -429,30 +427,31 @@ const genFragment = (
   }
 
   // IMG tags
-  if (
-    nodeName === 'img' &&
-    node instanceof HTMLImageElement &&
-    node.attributes.getNamedItem('src') &&
-    node.attributes.getNamedItem('src').value
-  ) {
-    const image: HTMLImageElement = node;
-    const entityConfig = {};
+  if (nodeName === 'img' && isHTMLImageElement(node)) {
+    const image: HTMLImageElement = (node: any);
+    if (
+      image.attributes.getNamedItem('src') &&
+      image.attributes.getNamedItem('src').value
+    ) {
+      const image: HTMLImageElement = node;
+      const entityConfig = {};
 
-    imgAttr.forEach(attr => {
-      const imageAttribute = image.getAttribute(attr);
-      if (imageAttribute) {
-        entityConfig[attr] = imageAttribute;
-      }
-    });
-    // Forcing this node to have children because otherwise no entity will be
-    // created for this node.
-    // The child text node cannot just have a space or return as content -
-    // we strip those out.
-    // See https://github.com/facebook/draft-js/issues/231 for some context.
-    node.textContent = '\ud83d\udcf7';
+      imgAttr.forEach(attr => {
+        const imageAttribute = image.getAttribute(attr);
+        if (imageAttribute) {
+          entityConfig[attr] = imageAttribute;
+        }
+      });
+      // Forcing this node to have children because otherwise no entity will be
+      // created for this node.
+      // The child text node cannot just have a space or return as content -
+      // we strip those out.
+      // See https://github.com/facebook/draft-js/issues/231 for some context.
+      image.textContent = '\ud83d\udcf7';
 
-    // TODO: update this when we remove DraftEntity entirely
-    inEntity = DraftEntity.__create('IMAGE', 'MUTABLE', entityConfig || {});
+      // TODO: update this when we remove DraftEntity entirely
+      inEntity = DraftEntity.__create('IMAGE', 'MUTABLE', entityConfig || {});
+    }
   }
 
   // Inline tags
@@ -469,9 +468,10 @@ const genFragment = (
   if (
     !experimentalTreeDataSupport &&
     nodeName === 'li' &&
-    node instanceof HTMLElement
+    isHTMLElement(node)
   ) {
-    depth = getListItemDepth(node, depth);
+    const castedNode: HTMLElement = (node: any);
+    depth = getListItemDepth(castedNode, depth);
   }
 
   const blockType = getBlockTypeForTag(nodeName, lastList, blockRenderMap);
@@ -503,24 +503,24 @@ const genFragment = (
   let entityId: ?string = null;
 
   while (child) {
-    if (
-      child instanceof HTMLAnchorElement &&
-      child.href &&
-      hasValidLinkText(child)
-    ) {
+    if (isHTMLAnchorElement(child)) {
       const anchor: HTMLAnchorElement = child;
-      const entityConfig = {};
+      if (anchor.href && hasValidLinkText(anchor)) {
+        const entityConfig = {};
 
-      anchorAttr.forEach(attr => {
-        const anchorAttribute = anchor.getAttribute(attr);
-        if (anchorAttribute) {
-          entityConfig[attr] = anchorAttribute;
-        }
-      });
+        anchorAttr.forEach(attr => {
+          const anchorAttribute = anchor.getAttribute(attr);
+          if (anchorAttribute) {
+            entityConfig[attr] = anchorAttribute;
+          }
+        });
 
-      entityConfig.url = new URI(anchor.href).toString();
-      // TODO: update this when we remove DraftEntity completely
-      entityId = DraftEntity.__create('LINK', 'MUTABLE', entityConfig || {});
+        entityConfig.url = new URI(anchor.href).toString();
+        // TODO: update this when we remove DraftEntity completely
+        entityId = DraftEntity.__create('LINK', 'MUTABLE', entityConfig || {});
+      } else {
+        entityId = undefined;
+      }
     } else {
       entityId = undefined;
     }

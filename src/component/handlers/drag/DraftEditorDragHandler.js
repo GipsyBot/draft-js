@@ -36,8 +36,9 @@ function getSelectionForEvent(
   let node: ?Node = null;
   let offset: ?number = null;
 
-  if (typeof document.caretRangeFromPoint === 'function') {
-    var dropRange = document.caretRangeFromPoint(event.x, event.y);
+  const {ownerDocument} = event.currentTarget;
+  if (typeof ownerDocument.caretRangeFromPoint === 'function') {
+    const dropRange = ownerDocument.caretRangeFromPoint(event.x, event.y);
     node = dropRange.startContainer;
     offset = dropRange.startOffset;
   } else if (event.rangeParent) {
