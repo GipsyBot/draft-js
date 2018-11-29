@@ -8036,7 +8036,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var node = null;
 	  var offset = null;
 
-	  var ownerDocument = event.currentTarget.ownerDocument;
+	  var target = event.currentTarget || event.target;
+	  var ownerDocument = target.ownerDocument || target;
 
 	  if (typeof ownerDocument.caretRangeFromPoint === 'function') {
 	    var dropRange = ownerDocument.caretRangeFromPoint(event.x, event.y);

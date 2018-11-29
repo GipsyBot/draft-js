@@ -33,7 +33,9 @@ function getSelectionForEvent(event: Object, editorState: EditorState): ?Selecti
   let node: ?Node = null;
   let offset: ?number = null;
 
-  const { ownerDocument } = event.currentTarget;
+  const target = event.currentTarget || event.target;
+  var ownerDocument = target.ownerDocument || target;
+
   if (typeof ownerDocument.caretRangeFromPoint === 'function') {
     const dropRange = ownerDocument.caretRangeFromPoint(event.x, event.y);
     node = dropRange.startContainer;
