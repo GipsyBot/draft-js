@@ -284,7 +284,7 @@ const containsSemanticBlockMarkup = (
 
 const hasValidLinkText = (link: Node): boolean => {
   invariant(isHTMLAnchorElement(link), 'Link must be an HTMLAnchorElement.');
-  const castedMink: HTMLAnchorElement = (link: any);
+  const castedLink: HTMLAnchorElement = (link: any);
   const protocol = castedLink.protocol;
   return (
     protocol === 'http:' || protocol === 'https:' || protocol === 'mailto:'
