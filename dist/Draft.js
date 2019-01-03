@@ -4692,7 +4692,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var hasValidLinkText = function hasValidLinkText(link) {
 	  !isHTMLAnchorElement(link) ?  true ? invariant(false, 'Link must be an HTMLAnchorElement.') : invariant(false) : void 0;
-	  var castedMink = link;
+	  var castedLink = link;
 	  var protocol = castedLink.protocol;
 	  return protocol === 'http:' || protocol === 'https:' || protocol === 'mailto:';
 	};
