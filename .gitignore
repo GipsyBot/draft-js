@@ -6,10 +6,15 @@
 /examples/draft-0-9-1/universal/node_modules
 /examples/draft-0-9-1/universal/yarn.lock
 /examples/draft-0-10-0/universal/static
-/examples/draft-0-10-0/universal/yarn.lock
+/examples/draft-0-10-0/universal/yarn.lockf
 /examples/draft-0-10-0/universal/node_modules
 /website/build/
 /website/node_modules/
 /website/src/lib/
 /website/src/docs/
+static/
+build/
 npm-debug.log
+!website/static/
+yarn-error.log
+.DS_Store

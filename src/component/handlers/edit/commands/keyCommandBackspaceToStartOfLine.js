@@ -1,30 +1,28 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule keyCommandBackspaceToStartOfLine
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var EditorState = require('EditorState');
+const EditorState = require('EditorState');
 
-var expandRangeToStartOfLine = require('expandRangeToStartOfLine');
-var getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
-var moveSelectionBackward = require('moveSelectionBackward');
-var removeTextWithStrategy = require('removeTextWithStrategy');
+const expandRangeToStartOfLine = require('expandRangeToStartOfLine');
+const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
+const moveSelectionBackward = require('moveSelectionBackward');
+const removeTextWithStrategy = require('removeTextWithStrategy');
 
 function keyCommandBackspaceToStartOfLine(
   editorState: EditorState,
   e: SyntheticKeyboardEvent<HTMLElement>,
 ): EditorState {
-  var afterRemoval = removeTextWithStrategy(
+  const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
       const selection = strategyState.getSelection();
@@ -34,7 +32,7 @@ function keyCommandBackspaceToStartOfLine(
 
       const {ownerDocument} = e.currentTarget;
       const domSelection = ownerDocument.defaultView.getSelection();
-      var range = domSelection.getRangeAt(0);
+      let range = domSelection.getRangeAt(0);
       range = expandRangeToStartOfLine(range);
 
       return getDraftEditorSelectionWithNodes(

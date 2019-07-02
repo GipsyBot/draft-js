@@ -15,16 +15,21 @@ function isInstanceOfNode(target: ?EventTarget): boolean {
   if (!target || !('ownerDocument' in target)) {
     return false;
   }
+
   if ('ownerDocument' in target) {
     const node: Node = (target: any);
+
     if (!node.ownerDocument.defaultView) {
       return node instanceof Node;
-    }
-    // $FlowFixMe https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11508#issuecomment-256045682
+    } // $FlowFixMe https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11508#issuecomment-256045682
+
+
     if (node instanceof node.ownerDocument.defaultView.Node) {
       return true;
     }
   }
+
   return false;
 }
+
 module.exports = isInstanceOfNode;

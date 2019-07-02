@@ -10,11 +10,14 @@
  * @flow
  * @emails oncall+draft_js
  */
-const isElement = require('./isElement');
+const isElement = require("./isElement");
+
 function isHTMLAnchorElement(node: ?Node): boolean {
   if (!node || !node.ownerDocument) {
     return false;
   }
+
   return isElement(node) && node.nodeName === 'A';
 }
+
 module.exports = isHTMLAnchorElement;
