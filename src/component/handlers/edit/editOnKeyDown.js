@@ -186,9 +186,9 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
   // Allow components higher up the tree to handle the command first.
   if (
     editor.props.handleKeyCommand &&
-    isEventHandled(
-      editor.props.handleKeyCommand(command, editorState, e.timeStamp),
-    )
+    // we remove e.Timestamp because it makes handleKeyCommand of draft-js-plugins bug (it consider setEditorState as undefined)
+    // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/draft-js-plugins-editor/src/Editor/defaultKeyCommands.js
+    isEventHandled(editor.props.handleKeyCommand(command, editorState))
   ) {
     return;
   }
