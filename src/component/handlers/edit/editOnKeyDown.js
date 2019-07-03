@@ -191,9 +191,7 @@ function editOnKeyDown(
   // Allow components higher up the tree to handle the command first.
   if (
     editor.props.handleKeyCommand &&
-    isEventHandled(
-      editor.props.handleKeyCommand(command, editorState, e.timeStamp),
-    )
+    isEventHandled(editor.props.handleKeyCommand(command, editorState))
   ) {
     return;
   }
