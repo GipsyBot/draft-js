@@ -198,6 +198,8 @@ function editOnKeyDown(
     return;
   }
 
+  console.log('e in editOnKeyDown', e);
+
   const newState = onKeyCommand(command, editorState, e);
 
   if (newState !== editorState) {
