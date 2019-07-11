@@ -31,6 +31,7 @@ const ReactDOM = require('ReactDOM');
 const Scroll = require('Scroll');
 const Style = require('Style');
 const UserAgent = require('UserAgent');
+const isHTMLElement = require('isHTMLElement');
 
 const cx = require('cx');
 const emptyFunction = require('emptyFunction');
@@ -481,6 +482,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       '!(editorNode instanceof HTMLElement) 4',
       !(editorNode instanceof HTMLElement),
     );
+    console.log('!isHTMLElement(editorNode) 4', !isHTMLElement(editorNode));
 
     invariant(
       editorNode instanceof HTMLElement,
@@ -510,7 +512,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   blur: () => void = (): void => {
     const editorNode = this.editor;
     console.log(
-      '!(editorNode instanceof HTMLElement) 9',
+      '!(editorNode instanceof HTMLElement) 9  ',
       !(editorNode instanceof HTMLElement),
     );
 

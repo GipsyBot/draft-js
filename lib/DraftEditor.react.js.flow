@@ -45,6 +45,8 @@ const Style = require("fbjs/lib/Style");
 
 const UserAgent = require("fbjs/lib/UserAgent");
 
+const isHTMLElement = require("./isHTMLElement");
+
 const cx = require("fbjs/lib/cx");
 
 const emptyFunction = require("fbjs/lib/emptyFunction");
@@ -437,6 +439,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       y
     } = scrollPosition || getScrollPosition(scrollParent);
     console.log('!(editorNode instanceof HTMLElement) 4', !(editorNode instanceof HTMLElement));
+    console.log('!isHTMLElement(editorNode) 4', !isHTMLElement(editorNode));
     invariant(editorNode instanceof HTMLElement, 'editorNode is not an HTMLElement');
     editorNode.focus(); // Restore scroll position
 
@@ -456,7 +459,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   };
   blur: () => void = (): void => {
     const editorNode = this.editor;
-    console.log('!(editorNode instanceof HTMLElement) 9', !(editorNode instanceof HTMLElement));
+    console.log('!(editorNode instanceof HTMLElement) 9  ', !(editorNode instanceof HTMLElement));
     invariant(editorNode instanceof HTMLElement, 'editorNode is not an HTMLElement');
     editorNode.blur();
   };

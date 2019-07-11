@@ -7953,21 +7953,21 @@ var EditorState = __webpack_require__(2);
 
 var KeyBindingUtil = __webpack_require__(40);
 
-var RawDraftContentState = __webpack_require__(154);
+var RawDraftContentState = __webpack_require__(155);
 
 var RichTextEditorUtil = __webpack_require__(72);
 
 var SelectionState = __webpack_require__(23);
 
-var convertFromDraftStateToRaw = __webpack_require__(155);
+var convertFromDraftStateToRaw = __webpack_require__(156);
 
-var convertFromRawToDraftState = __webpack_require__(158);
+var convertFromRawToDraftState = __webpack_require__(159);
 
 var generateRandomKey = __webpack_require__(8);
 
 var getDefaultKeyBinding = __webpack_require__(73);
 
-var getVisibleSelectionRect = __webpack_require__(164);
+var getVisibleSelectionRect = __webpack_require__(165);
 
 var gkx = __webpack_require__(7);
 
@@ -9939,6 +9939,8 @@ var Style = __webpack_require__(29);
 
 var UserAgent = __webpack_require__(10);
 
+var isHTMLElement = __webpack_require__(154);
+
 var cx = __webpack_require__(14);
 
 var emptyFunction = __webpack_require__(22);
@@ -10171,6 +10173,7 @@ function (_React$Component2) {
           y = _ref.y;
 
       console.log('!(editorNode instanceof HTMLElement) 4', !(editorNode instanceof HTMLElement));
+      console.log('!isHTMLElement(editorNode) 4', !isHTMLElement(editorNode));
       !(editorNode instanceof HTMLElement) ?  true ? invariant(false, 'editorNode is not an HTMLElement') : invariant(false) : void 0;
       editorNode.focus(); // Restore scroll position
 
@@ -10191,7 +10194,7 @@ function (_React$Component2) {
 
     _defineProperty(_assertThisInitialized(_this), "blur", function () {
       var editorNode = _this.editor;
-      console.log('!(editorNode instanceof HTMLElement) 9', !(editorNode instanceof HTMLElement));
+      console.log('!(editorNode instanceof HTMLElement) 9  ', !(editorNode instanceof HTMLElement));
       !(editorNode instanceof HTMLElement) ?  true ? invariant(false, 'editorNode is not an HTMLElement') : invariant(false) : void 0;
       editorNode.blur();
     });
@@ -17308,6 +17311,43 @@ module.exports = DraftEditorPlaceholder;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @format
+ * 
+ * @emails oncall+draft_js
+ */
+function isHTMLElement(node) {
+  if (!node || !node.ownerDocument) {
+    return false;
+  }
+
+  if (!node.ownerDocument.defaultView) {
+    return node instanceof HTMLElement;
+  }
+
+  if (node instanceof node.ownerDocument.defaultView.HTMLElement) {
+    return true;
+  }
+
+  return false;
+}
+
+module.exports = isHTMLElement;
+
+/***/ }),
+/* 155 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -17321,7 +17361,7 @@ module.exports = DraftEditorPlaceholder;
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17347,9 +17387,9 @@ var ContentBlockNode = __webpack_require__(6);
 
 var DraftStringKey = __webpack_require__(74);
 
-var encodeEntityRanges = __webpack_require__(156);
+var encodeEntityRanges = __webpack_require__(157);
 
-var encodeInlineStyleRanges = __webpack_require__(157);
+var encodeInlineStyleRanges = __webpack_require__(158);
 
 var invariant = __webpack_require__(1);
 
@@ -17456,7 +17496,7 @@ var convertFromDraftStateToRaw = function convertFromDraftStateToRaw(contentStat
 module.exports = convertFromDraftStateToRaw;
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17505,7 +17545,7 @@ function encodeEntityRanges(block, storageMap) {
 module.exports = encodeEntityRanges;
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17575,7 +17615,7 @@ function encodeInlineStyleRanges(block) {
 module.exports = encodeInlineStyleRanges;
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17603,17 +17643,17 @@ var ContentState = __webpack_require__(32);
 
 var DraftEntity = __webpack_require__(18);
 
-var DraftTreeAdapter = __webpack_require__(159);
+var DraftTreeAdapter = __webpack_require__(160);
 
-var DraftTreeInvariants = __webpack_require__(160);
+var DraftTreeInvariants = __webpack_require__(161);
 
 var SelectionState = __webpack_require__(23);
 
-var createCharacterList = __webpack_require__(161);
+var createCharacterList = __webpack_require__(162);
 
-var decodeEntityRanges = __webpack_require__(162);
+var decodeEntityRanges = __webpack_require__(163);
 
-var decodeInlineStyleRanges = __webpack_require__(163);
+var decodeInlineStyleRanges = __webpack_require__(164);
 
 var generateRandomKey = __webpack_require__(8);
 
@@ -17807,7 +17847,7 @@ var convertFromRawToDraftState = function convertFromRawToDraftState(rawState) {
 module.exports = convertFromRawToDraftState;
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17976,7 +18016,7 @@ var DraftTreeAdapter = {
 module.exports = DraftTreeAdapter;
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18155,7 +18195,7 @@ var DraftTreeInvariants = {
 module.exports = DraftTreeInvariants;
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18191,7 +18231,7 @@ function createCharacterList(inlineStyles, entities) {
 module.exports = createCharacterList;
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18236,7 +18276,7 @@ function decodeEntityRanges(text, ranges) {
 module.exports = decodeEntityRanges;
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18286,7 +18326,7 @@ function decodeInlineStyleRanges(text, ranges) {
 module.exports = decodeInlineStyleRanges;
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18302,7 +18342,7 @@ module.exports = decodeInlineStyleRanges;
  */
 
 
-var getRangeBoundingClientRect = __webpack_require__(165);
+var getRangeBoundingClientRect = __webpack_require__(166);
 /**
  * Return the bounding ClientRect for the visible DOM selection, if any.
  * In cases where there are no selected ranges or the bounding rect is
@@ -18336,7 +18376,7 @@ function getVisibleSelectionRect(global) {
 module.exports = getVisibleSelectionRect;
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
