@@ -10174,7 +10174,7 @@ function (_React$Component2) {
 
       console.log('!(editorNode instanceof HTMLElement) 4', !(editorNode instanceof HTMLElement));
       console.log('!isHTMLElement(editorNode) 4', !isHTMLElement(editorNode));
-      !(editorNode instanceof HTMLElement) ?  true ? invariant(false, 'editorNode is not an HTMLElement') : invariant(false) : void 0;
+      !isHTMLElement(editorNode) ?  true ? invariant(false, 'editorNode is not an HTMLElement') : invariant(false) : void 0;
       editorNode.focus(); // Restore scroll position
 
       if (scrollParent === window) {
@@ -10195,7 +10195,8 @@ function (_React$Component2) {
     _defineProperty(_assertThisInitialized(_this), "blur", function () {
       var editorNode = _this.editor;
       console.log('!(editorNode instanceof HTMLElement) 9  ', !(editorNode instanceof HTMLElement));
-      !(editorNode instanceof HTMLElement) ?  true ? invariant(false, 'editorNode is not an HTMLElement') : invariant(false) : void 0;
+      console.log('isHTMLElement(editorNode) 9  ', isHTMLElement(editorNode));
+      !isHTMLElement(editorNode) ?  true ? invariant(false, 'editorNode is not an HTMLElement') : invariant(false) : void 0;
       editorNode.blur();
     });
 

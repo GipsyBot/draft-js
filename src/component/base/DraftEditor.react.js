@@ -484,10 +484,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     );
     console.log('!isHTMLElement(editorNode) 4', !isHTMLElement(editorNode));
 
-    invariant(
-      editorNode instanceof HTMLElement,
-      'editorNode is not an HTMLElement',
-    );
+    invariant(isHTMLElement(editorNode), 'editorNode is not an HTMLElement');
 
     editorNode.focus();
 
@@ -515,11 +512,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       '!(editorNode instanceof HTMLElement) 9  ',
       !(editorNode instanceof HTMLElement),
     );
+    console.log('isHTMLElement(editorNode) 9  ', isHTMLElement(editorNode));
 
-    invariant(
-      editorNode instanceof HTMLElement,
-      'editorNode is not an HTMLElement',
-    );
+    invariant(isHTMLElement(editorNode), 'editorNode is not an HTMLElement');
     editorNode.blur();
   };
 
