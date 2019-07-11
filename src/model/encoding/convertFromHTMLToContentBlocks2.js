@@ -29,6 +29,10 @@ const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const gkx = require('gkx');
 const {List, Map, OrderedSet} = require('immutable');
 
+const isHTMLAnchorElement = require('isHTMLAnchorElement');
+const isHTMLElement = require('isHTMLElement');
+const isHTMLImageElement = require('isHTMLImageElement');
+
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
 const NBSP = '&nbsp;';
@@ -133,14 +137,17 @@ const getListItemDepth = (node: HTMLElement, depth: number = 0): number => {
  * Return true if the provided HTML Element can be used to build a
  * Draftjs-compatible link.
  */
-const isValidAnchor = (node: Node) => {
-  return !!(
-    node instanceof HTMLAnchorElement &&
-    node.href &&
-    (node.protocol === 'http:' ||
-      node.protocol === 'https:' ||
-      node.protocol === 'mailto:')
-  );
+const isValidAnchor = (node: Node): boolean => {
+  if (isHTMLAnchorElement(node)) {
+    const castedNode: HTMLAnchorElement = (node: any);
+    return Boolean(
+      castedNode.href &&
+        (castedNode.protocol === 'http:' ||
+          castedNode.protocol === 'https:' ||
+          castedNode.protocol === 'mailto:'),
+    );
+  }
+  return false;
 };
 
 /**
@@ -148,11 +155,14 @@ const isValidAnchor = (node: Node) => {
  * Draftjs-compatible image.
  */
 const isValidImage = (node: Node): boolean => {
-  return !!(
-    node instanceof HTMLImageElement &&
-    node.attributes.getNamedItem('src') &&
-    node.attributes.getNamedItem('src').value
-  );
+  if (isHTMLAnchorElement(node)) {
+    const castedNode: HTMLImageElement = (node: any);
+    return !!(
+      node.attributes.getNamedItem('src') &&
+      node.attributes.getNamedItem('src').value
+    );
+  }
+  return false;
 };
 
 /**
@@ -162,7 +172,7 @@ const isValidImage = (node: Node): boolean => {
 const styleFromNodeAttributes = (node: Node): DraftInlineStyle => {
   const style = OrderedSet();
 
-  if (!(node instanceof HTMLElement)) {
+  if (!isHTMLElement(node)) {
     return style;
   }
 
@@ -434,11 +444,12 @@ class ContentBlocksBuilder {
 
         if (
           !experimentalTreeDataSupport &&
-          node instanceof HTMLElement &&
+          isHTMLElement(node) &&
           (blockType === 'unordered-list-item' ||
             blockType === 'ordered-list-item')
         ) {
-          this.currentDepth = getListItemDepth(node, this.currentDepth);
+          const castedNode: HTMLElement = (node: any);
+          this.currentDepth = getListItemDepth(castedNode, this.currentDepth);
         }
 
         const key = generateRandomKey();
@@ -571,10 +582,10 @@ class ContentBlocksBuilder {
    * Add the content of an HTML img node to the internal state
    */
   _addImgNode(node: Node) {
-    if (!(node instanceof HTMLImageElement)) {
+    if (!isHTMLImageElement(node)) {
       return;
     }
-    const image: HTMLImageElement = node;
+    const image: HTMLImageElement = (node: any);
     const entityConfig = {};
 
     imgAttr.forEach(attr => {
@@ -595,7 +606,7 @@ class ContentBlocksBuilder {
     // we strip those out), unless the image is for presentation only.
     // See https://github.com/facebook/draft-js/issues/231 for some context.
     if (gkx('draftjs_fix_paste_for_img')) {
-      if (node.getAttribute('role') !== 'presentation') {
+      if (image.getAttribute('role') !== 'presentation') {
         this._appendText('\ud83d\udcf7');
       }
     } else {
@@ -613,10 +624,10 @@ class ContentBlocksBuilder {
   _addAnchorNode(node: Node, blockConfigs: Array<ContentBlockConfig>) {
     // The check has already been made by isValidAnchor but
     // we have to do it again to keep flow happy.
-    if (!(node instanceof HTMLAnchorElement)) {
+    if (!isHTMLAnchorElement(node)) {
       return;
     }
-    const anchor: HTMLAnchorElement = node;
+    const anchor: HTMLAnchorElement = (node: any);
     const entityConfig = {};
 
     anchorAttr.forEach(attr => {

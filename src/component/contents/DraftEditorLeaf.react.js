@@ -19,6 +19,7 @@ const DraftEditorTextNode = require('DraftEditorTextNode.react');
 const React = require('React');
 
 const invariant = require('invariant');
+const isElement = require('isElement');
 const setDraftEditorSelection = require('setDraftEditorSelection');
 
 type Props = {
@@ -101,7 +102,7 @@ class DraftEditorLeaf extends React.Component<Props> {
 
     if (child.nodeType === Node.TEXT_NODE) {
       targetNode = child;
-    } else if (child instanceof Element && child.tagName === 'BR') {
+    } else if (isElement(child) && child.tagName === 'BR') {
       targetNode = node;
     } else {
       targetNode = child.firstChild;

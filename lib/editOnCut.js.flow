@@ -21,6 +21,8 @@ const Style = require("fbjs/lib/Style");
 const getFragmentFromSelection = require("./getFragmentFromSelection");
 
 const getScrollPosition = require("fbjs/lib/getScrollPosition");
+
+const isNode = require("./isInstanceOfNode");
 /**
  * On `cut` events, native behavior is allowed to occur so that the system
  * clipboard is set properly. This means that we need to take steps to recover
@@ -45,7 +47,7 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   // after the editor regains control of the DOM.
 
 
-  if (element instanceof Node) {
+  if (isNode(element)) {
     scrollPosition = getScrollPosition(Style.getScrollParent(element));
   }
 
