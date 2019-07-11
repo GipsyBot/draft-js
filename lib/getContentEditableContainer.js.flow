@@ -10,6 +10,8 @@
  */
 'use strict';
 
+const isHTMLElement = require("./isHTMLElement");
+
 import type DraftEditor from "./DraftEditor.react";
 
 const ReactDOM = require("react-dom");
@@ -19,7 +21,7 @@ const invariant = require("fbjs/lib/invariant");
 function getContentEditableContainer(editor: DraftEditor): HTMLElement {
   const editorNode = ReactDOM.findDOMNode(editor.editorContainer);
   invariant(editorNode, 'Missing editorNode');
-  invariant(editorNode.firstChild instanceof HTMLElement, 'editorNode.firstChild is not an HTMLElement');
+  invariant(isHTMLElement(editorNode.firstChild), 'editorNode.firstChild is not an HTMLElement');
   return editorNode.firstChild;
 }
 

@@ -478,11 +478,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     const scrollParent = Style.getScrollParent(editorNode);
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
-    console.log(
-      '!(editorNode instanceof HTMLElement) 4',
-      !(editorNode instanceof HTMLElement),
-    );
-    console.log('!isHTMLElement(editorNode) 4', !isHTMLElement(editorNode));
 
     invariant(isHTMLElement(editorNode), 'editorNode is not an HTMLElement');
 
@@ -508,11 +503,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
   blur: () => void = (): void => {
     const editorNode = this.editor;
-    console.log(
-      '!(editorNode instanceof HTMLElement) 9  ',
-      !(editorNode instanceof HTMLElement),
-    );
-    console.log('isHTMLElement(editorNode) 9  ', isHTMLElement(editorNode));
 
     invariant(isHTMLElement(editorNode), 'editorNode is not an HTMLElement');
     editorNode.blur();
