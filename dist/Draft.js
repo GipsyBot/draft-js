@@ -1691,6 +1691,35 @@ module.exports = cx;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @format
+ * 
+ * @emails oncall+draft_js
+ */
+function isElement(node) {
+  if (!node || !node.ownerDocument) {
+    return false;
+  }
+
+  return node.nodeType === Node.ELEMENT_NODE;
+}
+
+module.exports = isElement;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1919,35 +1948,6 @@ var UnicodeUtils = {
   substr: substr
 };
 module.exports = UnicodeUtils;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @format
- * 
- * @emails oncall+draft_js
- */
-function isElement(node) {
-  if (!node || !node.ownerDocument) {
-    return false;
-  }
-
-  return node.nodeType === Node.ELEMENT_NODE;
-}
-
-module.exports = isElement;
 
 /***/ }),
 /* 16 */
@@ -4467,7 +4467,7 @@ module.exports = {
  * found on the DOM tree of given node.
  */
 
-var isElement = __webpack_require__(15);
+var isElement = __webpack_require__(14);
 
 function getSelectionOffsetKeyForNode(node) {
   if (isElement(node)) {
@@ -4671,7 +4671,7 @@ var getUpdatedSelectionState = __webpack_require__(58);
 
 var invariant = __webpack_require__(1);
 
-var isElement = __webpack_require__(15);
+var isElement = __webpack_require__(14);
 
 var nullthrows = __webpack_require__(4);
 
@@ -4956,6 +4956,8 @@ var React = __webpack_require__(9);
 
 var invariant = __webpack_require__(1);
 
+var isElement = __webpack_require__(14);
+
 var setDraftEditorSelection = __webpack_require__(110);
 
 /**
@@ -5017,7 +5019,7 @@ function (_React$Component) {
 
     if (child.nodeType === Node.TEXT_NODE) {
       targetNode = child;
-    } else if (child instanceof Element && child.tagName === 'BR') {
+    } else if (isElement(child) && child.tagName === 'BR') {
       targetNode = node;
     } else {
       targetNode = child.firstChild;
@@ -5867,7 +5869,7 @@ module.exports = getFragmentFromSelection;
 
 var EditorState = __webpack_require__(2);
 
-var UnicodeUtils = __webpack_require__(14);
+var UnicodeUtils = __webpack_require__(15);
 
 var moveSelectionBackward = __webpack_require__(41);
 
@@ -13486,7 +13488,7 @@ var UserAgent = __webpack_require__(10);
 
 var invariant = __webpack_require__(1);
 
-var isElement = __webpack_require__(15); // In IE, spans with <br> tags render as two newlines. By rendering a span
+var isElement = __webpack_require__(14); // In IE, spans with <br> tags render as two newlines. By rendering a span
 // with only a newline character, we can be sure to render a single line.
 
 
@@ -13637,7 +13639,7 @@ var getCorrectDocumentFromNode = __webpack_require__(37);
 
 var invariant = __webpack_require__(1);
 
-var isElement = __webpack_require__(15);
+var isElement = __webpack_require__(14);
 
 function getAnonymizedDOM(node, getNodeLabels) {
   if (!node) {
@@ -16483,7 +16485,7 @@ module.exports = keyCommandBackspaceToStartOfLine;
  * 
  * @emails oncall+draft_js
  */
-var UnicodeUtils = __webpack_require__(14);
+var UnicodeUtils = __webpack_require__(15);
 
 var getCorrectDocumentFromNode = __webpack_require__(37);
 
@@ -16945,7 +16947,7 @@ module.exports = keyCommandMoveSelectionToStartOfBlock;
 
 var EditorState = __webpack_require__(2);
 
-var UnicodeUtils = __webpack_require__(14);
+var UnicodeUtils = __webpack_require__(15);
 
 var moveSelectionForward = __webpack_require__(71);
 
@@ -17383,7 +17385,7 @@ module.exports = DraftPasteProcessor;
  * 
  * @emails oncall+draft_js
  */
-var isElement = __webpack_require__(15);
+var isElement = __webpack_require__(14);
 
 function isHTMLAnchorElement(node) {
   if (!node || !node.ownerDocument) {
@@ -17414,7 +17416,7 @@ module.exports = isHTMLAnchorElement;
  * 
  * @emails oncall+draft_js
  */
-var isElement = __webpack_require__(15);
+var isElement = __webpack_require__(14);
 
 function isHTMLImageElement(node) {
   if (!node || !node.ownerDocument) {
@@ -17729,7 +17731,7 @@ module.exports = convertFromDraftStateToRaw;
 
 var DraftStringKey = __webpack_require__(77);
 
-var UnicodeUtils = __webpack_require__(14);
+var UnicodeUtils = __webpack_require__(15);
 
 var strlen = UnicodeUtils.strlen;
 /**
@@ -17776,7 +17778,7 @@ module.exports = encodeEntityRanges;
  */
 
 
-var UnicodeUtils = __webpack_require__(14);
+var UnicodeUtils = __webpack_require__(15);
 
 var findRangesImmutable = __webpack_require__(17);
 
@@ -18462,7 +18464,7 @@ module.exports = createCharacterList;
  */
 
 
-var UnicodeUtils = __webpack_require__(14);
+var UnicodeUtils = __webpack_require__(15);
 
 var substr = UnicodeUtils.substr;
 /**
@@ -18507,7 +18509,7 @@ module.exports = decodeEntityRanges;
  */
 
 
-var UnicodeUtils = __webpack_require__(14);
+var UnicodeUtils = __webpack_require__(15);
 
 var _require = __webpack_require__(0),
     OrderedSet = _require.OrderedSet;
