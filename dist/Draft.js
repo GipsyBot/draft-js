@@ -10170,6 +10170,7 @@ function (_React$Component2) {
           x = _ref.x,
           y = _ref.y;
 
+      console.log('!(editorNode instanceof HTMLElement) 4', !(editorNode instanceof HTMLElement));
       !(editorNode instanceof HTMLElement) ?  true ? invariant(false, 'editorNode is not an HTMLElement') : invariant(false) : void 0;
       editorNode.focus(); // Restore scroll position
 
@@ -10190,6 +10191,7 @@ function (_React$Component2) {
 
     _defineProperty(_assertThisInitialized(_this), "blur", function () {
       var editorNode = _this.editor;
+      console.log('!(editorNode instanceof HTMLElement) 9', !(editorNode instanceof HTMLElement));
       !(editorNode instanceof HTMLElement) ?  true ? invariant(false, 'editorNode is not an HTMLElement') : invariant(false) : void 0;
       editorNode.blur();
     });
