@@ -11,6 +11,7 @@
 
 'use strict';
 
+const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
 const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
 
 /**
@@ -18,7 +19,10 @@ const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
  */
 function findAncestorOffsetKey(node: Node): ?string {
   let searchNode = node;
-  while (searchNode && searchNode !== document.documentElement) {
+  while (
+    searchNode &&
+    searchNode !== getCorrectDocumentFromNode(node).documentElement
+  ) {
     const key = getSelectionOffsetKeyForNode(searchNode);
     if (key != null) {
       return key;
